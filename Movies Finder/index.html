@@ -10,9 +10,24 @@
 </head>
 
 <body>
-    <div>
-        <h3 id="aaa"></h3>
-    </div>
+    <header class="position-fixed">
+        <nav class="navbar navbar-default">
+            <a href="#/home/" class="navbar-brand" id="navbar-brand-id">Movies Finder</a>
+
+            <form class="navbar-form navbar-right" role="search" id="search-control">
+                <input type="text" class="form-control" placeholder="Search by title or author" id="search-input">
+                <a class="btn btn-info" id="search-btn">Search</a>
+            </form>
+            <div class="navbar-right" id="login-control">
+                <a id="nav-btn-login" class="btn btn-info" href="#/login">Login</a>
+                <a id="nav-btn-register" class="btn btn-info" href="#/register">Register</a>
+                <a id="nav-btn-logout" class="btn btn-info" href="#/home/">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <main id="content">
+    </main>
 
     <script src="./node_modules/systemjs/dist/system.js"></script>
     <script src="./scripts/configs/system-config.js"></script>
@@ -22,7 +37,7 @@
 
     <script src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script src="./node_modules/handlebars/dist/handlebars.js"></script>
-    <script src="./node_modules/navigo/lib/navigo.js"></script>
+    <script src="./node_modules/sammy/lib/sammy.js"></script>
 </body>
 
 </html>
