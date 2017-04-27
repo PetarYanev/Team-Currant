@@ -12,8 +12,10 @@ SystemJS.config({
         "sammy": "./node_modules/sammy/lib/sammy.js",
         "jquery": "./node_modules/jquery/dist/jquery.min.js",
         "handlebars": "./node_modules/handlebars/dist/handlebars.js",
+        "cryptojs": "./node_modules/crypto-js/crypto-js.js",
         "template": "./scripts/template.js",
-        "account-controller": "./scripts/controllers/account-controller.js"
+        "account-controller": "./scripts/controllers/account-controller.js",
+        "encryptor": "./scripts/еncryptor.js"
     }
 });
 
