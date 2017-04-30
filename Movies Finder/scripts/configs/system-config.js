@@ -15,6 +15,7 @@ SystemJS.config({
         "cryptojs": "./node_modules/crypto-js/crypto-js.js",
         "template": "./scripts/template.js",
         "account-controller": "./scripts/controllers/account-controller.js",
+        "gallery-controller": "./scripts/controllers/gallery-controller.js",
         "encryptor": "./scripts/еncryptor.js"
     }
 });

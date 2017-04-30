@@ -2,16 +2,14 @@ import $ from "jquery";
 import { encryptToBase64 } from "encryptor";
 
 let galleyControl = function() {
-    function getAllBooks() {
+    function getAllMovies() {
         let promise = new Promise(function(resolve) {
 
-            let authorization = encryptToBase64("kid_HkCptq2Ae:f78eee25f64842e28ddda28312edac4a");
-
             $.ajax({
-                url: "https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/",
+                url: "https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query={}&sort={\"name\": 1}",
                 method: "GET",
                 headers: {
-                    "Authorization": `Basic ${authorization}`
+                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
                 },
                 data: JSON.stringify(),
                 contentType: "application/json",
@@ -19,25 +17,23 @@ let galleyControl = function() {
                     resolve(response);
                 }
             });
-
         });
 
         return promise;
     }
 
-    function getBooksByGenre(movieGenre) {
+    function getMoviesByGenre(movieGenre) {
         let promise = new Promise(function(resolve) {
-
-            let authorization = encryptToBase64("kid_HkCptq2Ae:f78eee25f64842e28ddda28312edac4a");
 
             var filter = JSON.stringify({
                 "genre": movieGenre
             });
+
             $.ajax({
                 url: `https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query=${filter}`,
                 method: "GET",
                 headers: {
-                    "Authorization": `Basic ${authorization}`
+                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
                 },
                 data: JSON.stringify(),
                 contentType: "application/json",
@@ -51,8 +47,8 @@ let galleyControl = function() {
     }
 
     return {
-        getAllBooks,
-        getBooksByGenre
+        getAllMovies,
+        getMoviesByGenre
     };
 }();
 

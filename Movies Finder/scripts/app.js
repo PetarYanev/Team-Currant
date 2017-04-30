@@ -2,13 +2,20 @@ import Sammy from "sammy";
 import $ from "jquery";
 import { template } from "template";
 import { accountControl } from "account-controller";
+import { galleyControl } from "gallery-controller";
 
 let router = Sammy("#content", function() {
     let $content = $("#content");
 
-    this.get("#/home/", function(context) {
-        // context.redirect("#/home/");
-        console.log("here");
+    this.get("#/home/", function() {
+        galleyControl.getAllMovies()
+            .then(function(movies) {
+                template.get("home")
+                    .then(function(template) {
+                        $content.html(template(movies));
+                    });
+            });
+
     });
 
     this.get("#/login", function(context) {
@@ -68,7 +75,19 @@ let router = Sammy("#content", function() {
         context.redirect("#/home/");
     });
 
-    this.get("")
+    this.get("#/sorted-by/?:genre", function() {
+        let genre = this.params["genre"];
+
+        galleyControl.getMoviesByGenre(genre)
+            .then(function(movies) {
+                template.get("home")
+                    .then(function(template) {
+                        $content.html(template(movies));
+                    });
+            });
+    });
+
+
 });
 
 router.run("#/home/");
