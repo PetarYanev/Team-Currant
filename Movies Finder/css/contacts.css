@@ -1,0 +1,17 @@
+.contact-container{
+    margin: 20px;
+}
+
+h4{
+    padding: 5px;
+}
+
+p{
+    padding-left: 15px;
+}
+
+#map{
+    width: 600px;
+    height: 400px;
+    margin:10px;
+}
