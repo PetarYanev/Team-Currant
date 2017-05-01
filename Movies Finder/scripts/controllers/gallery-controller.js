@@ -46,6 +46,30 @@ let galleyControl = function() {
         return promise;
     }
 
+    function getMoviesByTitle(movieTitle) {
+        let promise = new Promise(function(resolve) {
+
+            var filter = JSON.stringify({
+                "name": movieTitle
+            });
+
+            $.ajax({
+                url: `https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query=${filter}`,
+                method: "GET",
+                headers: {
+                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
+                },
+                data: JSON.stringify(),
+                contentType: "application/json",
+                success: function(response) {
+                    resolve(response);
+                }
+            });
+        });
+
+        return promise;
+    }
+
     function getMoviesByRate() {
         let promise = new Promise(function(resolve) {
 
@@ -90,7 +114,8 @@ let galleyControl = function() {
         getAllMovies,
         getMoviesByGenre,
         getMoviesByRate,
-        getMoviesByNowPlaying
+        getMoviesByNowPlaying,
+        getMoviesByTitle
     };
 }();
 
