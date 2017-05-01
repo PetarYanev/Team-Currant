@@ -107,6 +107,18 @@ let router = Sammy("#content", function() {
             });
     });
 
+    this.get("#/movies-info/?:name", function() {
+        let title = this.params["name"];
+
+        galleyControl.getMoviesByTitle(title)
+            .then(function(movie) {
+                template.get("movies-info")
+                    .then(function(template) {
+                        $content.html(template(movie));
+                    });
+            });
+    });
+
     this.get("#/contact/", function(context) {
         template.get("contacts")
             .then(function(template) {
