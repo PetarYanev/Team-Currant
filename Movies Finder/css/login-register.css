@@ -1,0 +1,13 @@
+.login-container{
+    width: 30%;
+    margin: 0px auto;
+    padding: 10px;
+}
+
+input{
+    margin:15px;
+}
+
+.alert{
+    text-align: center;
+}

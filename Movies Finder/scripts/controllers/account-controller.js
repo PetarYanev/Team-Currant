@@ -31,7 +31,8 @@ let accountControl = function() {
 
                     resolve(user);
                 },
-                fail: function(err) {
+                error: function(err) {
+                   $('#passwordsNoMatchRegister').fadeIn();                  
                     reject(err);
                 }
             });
@@ -60,7 +61,8 @@ let accountControl = function() {
                 success: function(user) {
                     resolve(user);
                 },
-                fail: function(err) {
+                error: function(err) {
+                    $('#existingUser').fadeIn();  
                     reject(err);
                 }
             });
