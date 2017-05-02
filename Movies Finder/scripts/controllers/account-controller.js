@@ -83,28 +83,29 @@ let accountControl = function() {
         return promise;
     }
 
-    function currentUser() {
-        let username = localStorage.getItem(AUTH_TOKEN_STORAGE_KEY);
-        let userToken = localStorage.getItem(USERNAME_STORAGE_KEY);
-        let userId = localStorage.getItem(USER_ID);
+    //BUG HERE
+    // function currentUser() {
+    //     let username = localStorage.getItem(AUTH_TOKEN_STORAGE_KEY);
+    //     let userToken = localStorage.getItem(USERNAME_STORAGE_KEY);
+    //     let userId = localStorage.getItem(USER_ID);
 
 
-        if (!username) {
-            return null;
-        } else {
-            return {
-                username,
-                userToken,
-                userId
-            };
-        }
-    }
+    //     if (!username) {
+    //         return null;
+    //     } else {
+    //         return {
+    //             username,
+    //             userToken,
+    //             userId
+    //         };
+    //     }
+    // }
 
     return {
         userLogin,
         userRegister,
         userLogout,
-        currentUser
+        // currentUser
     };
 }();
 
