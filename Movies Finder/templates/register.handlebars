@@ -1,4 +1,12 @@
-<h3 class="form-register" id="register-form-header">Register</h3>
-<input placeholder="Username" type="text" class="form-control" id="tb-regUsername" />
-<input placeholder="Password" type="password" class="form-control" id="tb-regPassword" />
-<button id="btn-register" class="btn btn-success">Register</button>
+<link rel="stylesheet" href="../css/login-register.css">
+
+<div class="alert alert-danger" id="existingUser" role="alert" style="display:none;">
+	This username already exists.
+</div>
+
+<div class="login-container">
+	<h2 class="form-register" id="register-form-header">Register</h2>
+	<input placeholder="Username" type="text" class="form-control user" id="tb-regUsername" />
+	<input placeholder="Password" type="password" class="form-control user" id="tb-regPassword" />
+	<button id="btn-register" class="btn btn-info">Register</button>
+</div>

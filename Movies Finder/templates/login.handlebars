@@ -1,4 +1,12 @@
-<h3 class="form-login" id="login-form-header">Login</h3>
-<input placeholder="Username" type="text" class="form-control" id="tb-username" />
-<input placeholder="Password" type="password" class="form-control" id="tb-password" />
-<button id="btn-login" class="btn btn-success">Login</button>
+<link rel="stylesheet" href="../css/login-register.css">
+
+<div class="alert alert-danger" id="passwordsNoMatchRegister" role="alert" style="display:none;">
+	There isn`t such user. Please try again.
+</div>
+
+<div class="login-container">
+	<h2 class="form-login" id="login-form-header">Login</h2>
+	<input placeholder="Username" type="text" class="form-control user" id="tb-username" />
+	<input placeholder="Password" type="password" class="form-control user" id="tb-password" />
+	<button id="btn-login" class="btn btn-info">Login</button>
+</div>

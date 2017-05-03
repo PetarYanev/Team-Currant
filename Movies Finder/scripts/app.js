@@ -19,10 +19,10 @@ let router = Sammy("#content", function () {
     });
 
     this.get("#/login", function (context) {
-        if (accountControl.currentUser()) {
-            context.redirect("#/home/");
-            return;
-        }
+        // if (accountControl.currentUser()) {
+        //     context.redirect("#/home/");
+        //     return;
+        // }
 
         template.get("login")
             .then(function (template) {
@@ -37,16 +37,19 @@ let router = Sammy("#content", function () {
                     accountControl.userLogin(loginUser)
                         .then(function () {
                             context.redirect("#/home/");
+                            $("#nav-btn-logout").css("display", "block");
+                            $("#nav-btn-login").css("display", "none");
+                            $("#nav-btn-register").css("display", "none");
                         });
                 });
             });
     });
 
     this.get("#/register", function (context) {
-        if (accountControl.currentUser()) {
-            context.redirect("#/login");
-            return;
-        }
+        // if (accountControl.currentUser()) {
+        //     context.redirect("#/login");
+        //     return;
+        // }
 
         template.get("register")
             .then(function (template) {
@@ -73,6 +76,9 @@ let router = Sammy("#content", function () {
     this.get("#/logout", function (context) {
         accountControl.userLogout();
         context.redirect("#/home/");
+        $("#nav-btn-logout").css("display", "none");
+        $("#nav-btn-login").css("display", "block");
+        $("#nav-btn-register").css("display", "block");
     });
 
     this.get("#/sorted-by/?:genre", function () {
@@ -83,6 +89,38 @@ let router = Sammy("#content", function () {
                 template.get("home")
                     .then(function (template) {
                         $content.html(template(movies));
+                    });
+            });
+    });
+
+    this.get("#/top-rated", function () {
+        galleyControl.getMoviesByRate()
+            .then(function (movies) {
+                template.get("home")
+                    .then(function (template) {
+                        $content.html(template(movies));
+                    });
+            });
+    });
+
+    this.get("#/now-playing", function () {
+        galleyControl.getMoviesByNowPlaying()
+            .then(function (movies) {
+                template.get("home")
+                    .then(function (template) {
+                        $content.html(template(movies));
+                    });
+            });
+    });
+
+    this.get("#/movies-info/?:name", function () {
+        let title = this.params["name"];
+
+        galleyControl.getMoviesByTitle(title)
+            .then(function (movie) {
+                template.get("movies-info")
+                    .then(function (template) {
+                        $content.html(template(movie));
                     });
             });
     });
