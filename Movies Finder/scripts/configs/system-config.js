@@ -16,7 +16,11 @@ SystemJS.config({
         "template": "./scripts/template.js",
         "account-controller": "./scripts/controllers/account-controller.js",
         "gallery-controller": "./scripts/controllers/gallery-controller.js",
-        "encryptor": "./scripts/еncryptor.js"
+        "encryptor": "./scripts/еncryptor.js",
+        "mocha": "../../node_modules/mocha/mocha.js",
+        "chai": "../../node_modules/chai/chai.js",
+        "sinon": "../../node_modules/sinon/pkg/sinon.js",
+        "sinon-chai": "../../node_modules/sinon-chai/lib/sinon-chai.js"
     }
 });
 
