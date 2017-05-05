@@ -1,18 +1,20 @@
-{{#this}}
-{{#ifThird @index}}<div class="row">{{/ifThird}}
-    <div class="col-sm-6 col-md-4">
-        <div class="thumbnail">
-            <img src="{{picture}}" alt="picture">
-            <div class="caption">
-                <h3>{{name}}</h3>
-                <p>{{description}}</p>
-                <p>
-                    <a href="#/movies-info/{{name}}" class="btn btn-primary" role="button">More Info</a>
-                    <a href="#/watchlist" class="btn btn-default" role="button">Add to Watchlist</a>
-                </p>
-            </div>
-        </div>
-    </div>
-{{#ifThirdLast @index}}</div>{{/ifThirdLast}}
-{{#if @last}}</div>{{/if}}
-{{/this}}
+<link rel="stylesheet" href="../css/home.css"> {{#this}} {{#ifThird @index}}
+
+<div class="row">{{/ifThird}}
+	<div class="col-md-4">
+		<div class="thumbnail" id="template">
+			<img src="{{picture}}" id="picture" alt="picture">
+			<div class = "movie-info">
+				<h3 class="description">{{name}}</h3>
+				<p class="description">{{description}}</p>
+			</div>
+
+			<div class="caption">
+				<p>
+					<a href="#/movies-info/{{name}}" class="btn btn-primary" role="button">More Info</a>
+					<a href="#/watchlist" class="btn btn-default" role="button">Add to Watchlist</a>
+				</p>
+			</div>
+		</div>
+	</div>
+	{{#ifThirdLast @index}}</div>{{/ifThirdLast}} {{#if @last}}</div>{{/if}} {{/this}}
