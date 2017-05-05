@@ -32,7 +32,7 @@ let accountControl = function() {
                     resolve(user);
                 },
                 error: function(err) {
-                   $('#passwordsNoMatchRegister').fadeIn();                  
+                    $('#passwordsNoMatchRegister').fadeIn();
                     reject(err);
                 }
             });
@@ -62,7 +62,7 @@ let accountControl = function() {
                     resolve(user);
                 },
                 error: function(err) {
-                    $('#existingUser').fadeIn();  
+                    $('#existingUser').fadeIn();
                     reject(err);
                 }
             });
@@ -83,29 +83,73 @@ let accountControl = function() {
         return promise;
     }
 
-    //BUG HERE
-    // function currentUser() {
-    //     let username = localStorage.getItem(AUTH_TOKEN_STORAGE_KEY);
-    //     let userToken = localStorage.getItem(USERNAME_STORAGE_KEY);
-    //     let userId = localStorage.getItem(USER_ID);
+    function addMovieToUserWatchlist(movie) {
+        let promise = new Promise(function(resolve) {
+            let userId = localStorage.getItem(USER_ID);
+            let addedMovie = {
+                watchlist: movie
+            };
 
+            $.ajax({
+                url: `https://baas.kinvey.com/user/kid_HkCptq2Ae/${userId}`,
+                method: "PUT",
+                headers: {
+                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
+                },
+                data: JSON.stringify(addedMovie),
+                contentType: "application/json",
+                success: function(response) {
+                    resolve(response);
+                }
+            });
+        });
 
-    //     if (!username) {
-    //         return null;
-    //     } else {
-    //         return {
-    //             username,
-    //             userToken,
-    //             userId
-    //         };
-    //     }
-    // }
+        return promise;
+    }
+
+    function getMoviesFromUsersWatchlist() {
+        let promise = new Promise(function(resolve) {
+            let userId = localStorage.getItem(USER_ID);
+
+            $.ajax({
+                url: `https://baas.kinvey.com/user/kid_HkCptq2Ae/${userId}`,
+                method: "GET",
+                headers: {
+                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
+                },
+                contentType: "application/json",
+                success: function(response) {
+                    resolve(response);
+                }
+            });
+        });
+
+        return promise;
+    }
+
+    function currentUser() {
+        let username = localStorage.getItem(AUTH_TOKEN_STORAGE_KEY);
+        let userToken = localStorage.getItem(USERNAME_STORAGE_KEY);
+        let userId = localStorage.getItem(USER_ID);
+
+        if (!username) {
+            return null;
+        } else {
+            return {
+                username,
+                userToken,
+                userId
+            };
+        }
+    }
 
     return {
         userLogin,
         userRegister,
         userLogout,
-        // currentUser
+        currentUser,
+        addMovieToUserWatchlist,
+        getMoviesFromUsersWatchlist
     };
 }();
 
