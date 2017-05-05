@@ -1,5 +1,5 @@
-<div class="row">
 {{#this}}
+{{#ifThird @index}}<div class="row">{{/ifThird}}
     <div class="col-sm-6 col-md-4">
         <div class="thumbnail">
             <img src="{{picture}}" alt="picture">
@@ -13,5 +13,6 @@
             </div>
         </div>
     </div>
+{{#ifThirdLast @index}}</div>{{/ifThirdLast}}
+{{#if @last}}</div>{{/if}}
 {{/this}}
-</div>
