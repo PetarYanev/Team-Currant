@@ -127,17 +127,18 @@ let router = Sammy("#content", function () {
 
     this.get("#/search", function () {
         $("#search-btn").on("click", function () {
+
             let title = $("#search").val();
             let moviesToShow = [];
-            
+
             galleyControl.getAllMovies()
                 .then(function (movies) {
                     for (let i = 0; i < movies.length; i += 1) {
-                        if(movies[i].name.indexOf(title) >= 0){
-                            console.log(movies[i].name);
+                        if (movies[i].name.toLowerCase().indexOf(title.toLowerCase()) >= 0) {
                             moviesToShow.push(movies[i]);
                         }
                     }
+
                     template.get("home")
                         .then(function (template) {
                             $content.html(template(moviesToShow));
@@ -145,7 +146,6 @@ let router = Sammy("#content", function () {
                 });
         });
     });
-
 
     this.get("#/contact/", function (context) {
         template.get("contacts")
