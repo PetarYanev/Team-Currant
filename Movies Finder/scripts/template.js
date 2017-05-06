@@ -4,19 +4,19 @@ import $ from "jquery";
 
 class Template {
     get(name) {
-        handlebars.registerHelper('ifFourth', function(index, options) {
+        handlebars.registerHelper("ifFourth", function(index, options) {
             if (index % 4 === 0) {
                 return options.fn(this);
             }
         });
 
-        handlebars.registerHelper('ifFourthLast', function(index, options) {
+        handlebars.registerHelper("ifFourthLast", function(index, options) {
             if (index % 4 === 3) {
                 return options.fn(this);
             }
         });
 
-        let promise = new Promise(function(resolve, reject) {
+        let promise = new Promise(function(resolve) {
             let url = `templates/${name}.handlebars`;
 
             $.get(url, function(templateHtml) {

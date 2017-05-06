@@ -8,15 +8,15 @@ let router = Sammy("#content", function() {
     let $content = $("#content");
 
     if (accountControl.currentUser()) {
-        $('#nav-btn-register').addClass('hidden');
-        $('#nav-btn-login').addClass('hidden');
-        $('#my-watchlist').removeClass('hidden');
-        $('#nav-btn-logout').removeClass('hidden');
+        $("#nav-btn-register").addClass("hidden");
+        $("#nav-btn-login").addClass("hidden");
+        $("#my-watchlist").removeClass("hidden");
+        $("#nav-btn-logout").removeClass("hidden");
     } else {
-        $('#nav-btn-register').removeClass('hidden');
-        $('#nav-btn-login').removeClass('hidden');
-        $('#my-watchlist').addClass('hidden');
-        $('#nav-btn-logout').addClass('hidden');
+        $("#nav-btn-register").removeClass("hidden");
+        $("#nav-btn-login").removeClass("hidden");
+        $("#my-watchlist").addClass("hidden");
+        $("#nav-btn-logout").addClass("hidden");
     }
 
     this.get("#/home/", function() {
@@ -48,10 +48,10 @@ let router = Sammy("#content", function() {
                     accountControl.userLogin(loginUser)
                         .then(function() {
                             context.redirect("#/home/");
-                            $("#nav-btn-logout").removeClass('hidden');
-                            $("#nav-btn-login").addClass('hidden');
-                            $("#nav-btn-register").addClass('hidden');
-                            $("#my-watchlist").removeClass('hidden');
+                            $("#nav-btn-logout").removeClass("hidden");
+                            $("#nav-btn-login").addClass("hidden");
+                            $("#nav-btn-register").addClass("hidden");
+                            $("#my-watchlist").removeClass("hidden");
                         });
                 });
             });
@@ -88,10 +88,10 @@ let router = Sammy("#content", function() {
     this.get("#/logout", function(context) {
         accountControl.userLogout();
         context.redirect("#/home/");
-        $("#nav-btn-logout").addClass('hidden');
-        $("#nav-btn-login").removeClass('hidden');
-        $("#nav-btn-register").removeClass('hidden');
-        $("#my-watchlist").addClass('hidden');
+        $("#nav-btn-logout").addClass("hidden");
+        $("#nav-btn-login").removeClass("hidden");
+        $("#nav-btn-register").removeClass("hidden");
+        $("#my-watchlist").addClass("hidden");
     });
 
     this.get("#/sorted-by/?:genre", function() {
@@ -195,7 +195,6 @@ let router = Sammy("#content", function() {
         accountControl.getMoviesFromUsersWatchlist()
             .then(function(user) {
                 let movies = user.watchlist;
-                // let isTheMovieAdded = false;
 
                 for (var i = 0; i < movies.length; i += 1) {
                     if (movies[i].name === title) {
@@ -204,12 +203,6 @@ let router = Sammy("#content", function() {
                     }
                 }
 
-                // movies.forEach(function(movieInWatchlist) {
-                //     if (movieInWatchlist.title === title) {
-                //         movies
-                //     }
-                // });
-
                 accountControl.addMovieToUserWatchlist(movies);
                 context.redirect("#/my-watchlist");
             });
@@ -217,14 +210,14 @@ let router = Sammy("#content", function() {
     });
 
 
-    this.get("#/contact/", function(context) {
+    this.get("#/contact/", function() {
         template.get("contacts")
             .then(function(template) {
                 $content.html(template());
             });
     });
 
-    this.get("#/my-watchlist", function(context) {
+    this.get("#/my-watchlist", function() {
         accountControl.getMoviesFromUsersWatchlist()
             .then(function(movies) {
                 template.get("watchlist")
