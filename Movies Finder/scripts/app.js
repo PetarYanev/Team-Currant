@@ -182,12 +182,40 @@ let router = Sammy("#content", function() {
                             if (!isTheMovieAdded) {
                                 movies.push(movie[0]);
 
-                                accountControl.addMovieToUserWatchlist(movies)
+                                accountControl.addMovieToUserWatchlist(movies);
                             }
                         }
                     });
             });
     });
+
+    this.get("#/watchlist-remove/?:name", function(context) {
+        let title = this.params["name"];
+
+        accountControl.getMoviesFromUsersWatchlist()
+            .then(function(user) {
+                let movies = user.watchlist;
+                // let isTheMovieAdded = false;
+
+                for (var i = 0; i < movies.length; i += 1) {
+                    if (movies[i].name === title) {
+                        movies.splice(i, 1);
+                        break;
+                    }
+                }
+
+                // movies.forEach(function(movieInWatchlist) {
+                //     if (movieInWatchlist.title === title) {
+                //         movies
+                //     }
+                // });
+
+                accountControl.addMovieToUserWatchlist(movies);
+                context.redirect("#/my-watchlist");
+            });
+
+    });
+
 
     this.get("#/contact/", function(context) {
         template.get("contacts")
@@ -199,8 +227,7 @@ let router = Sammy("#content", function() {
     this.get("#/my-watchlist", function(context) {
         accountControl.getMoviesFromUsersWatchlist()
             .then(function(movies) {
-                console.log(movies)
-                template.get("home")
+                template.get("watchlist")
                     .then(function(template) {
                         $content.html(template(movies.watchlist));
                     });
