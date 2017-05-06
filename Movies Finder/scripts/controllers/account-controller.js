@@ -32,7 +32,7 @@ let accountControl = function() {
                     resolve(user);
                 },
                 error: function(err) {
-                    $('#passwordsNoMatchRegister').fadeIn();
+                    $("#passwordsNoMatchRegister").fadeIn();
                     reject(err);
                 }
             });
@@ -62,7 +62,7 @@ let accountControl = function() {
                     resolve(user);
                 },
                 error: function(err) {
-                    $('#existingUser').fadeIn();
+                    $("#existingUser").fadeIn();
                     reject(err);
                 }
             });
