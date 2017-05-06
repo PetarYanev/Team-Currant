@@ -32,3 +32,67 @@
         -webkit-transition: background .2s linear, color .2s linear;
         -o-transition: background .2s linear, color .2s linear;
 }
+
+#btn-add-to-watchlist {
+  background: #2b7fe6;
+  background-image: -webkit-linear-gradient(top, #2b7fe6, #053957);
+  background-image: -moz-linear-gradient(top, #2b7fe6, #053957);
+  background-image: -ms-linear-gradient(top, #2b7fe6, #053957);
+  background-image: -o-linear-gradient(top, #2b7fe6, #053957);
+  background-image: linear-gradient(to bottom, #2b7fe6, #053957);
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  -webkit-box-shadow: 4px 2px 6px #043369;
+  -moz-box-shadow: 4px 2px 6px #043369;
+  box-shadow: 4px 2px 6px #043369;
+  font-family: Georgia;
+  color: #ffffff;
+  font-size: 14px;
+  padding: 10px 10px 10px 10px;
+  text-decoration: none;
+  border: 0px;
+}
+
+#btn-add-to-watchlist:hover {
+  background: #8ed2f2;
+  background-image: -webkit-linear-gradient(top, #8ed2f2, #0062b8);
+  background-image: -moz-linear-gradient(top, #8ed2f2, #0062b8);
+  background-image: -ms-linear-gradient(top, #8ed2f2, #0062b8);
+  background-image: -o-linear-gradient(top, #8ed2f2, #0062b8);
+  background-image: linear-gradient(to bottom, #8ed2f2, #0062b8);
+ 
+  text-decoration: none;
+}
+
+#btn-watch-trailer {
+    background: #878487;
+  background-image: -webkit-linear-gradient(top, #878487, #141414);
+  background-image: -moz-linear-gradient(top, #878487, #141414);
+  background-image: -ms-linear-gradient(top, #878487, #141414);
+  background-image: -o-linear-gradient(top, #878487, #141414);
+  background-image: linear-gradient(to bottom, #878487, #141414);
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  -webkit-box-shadow: 3px 2px 6px #01070d;
+  -moz-box-shadow: 3px 2px 6px #01070d;
+  box-shadow: 3px 2px 6px #01070d;
+  font-family: Georgia;
+  color: #ffffff;
+  font-size: 14px;
+  padding: 10px 10px 10px 10px;
+  text-decoration: none;
+  border: 0px;
+}
+
+#btn-watch-trailer:hover {
+   background: #bdbdbd;
+  background-image: -webkit-linear-gradient(top, #bdbdbd, #464647);
+  background-image: -moz-linear-gradient(top, #bdbdbd, #464647);
+  background-image: -ms-linear-gradient(top, #bdbdbd, #464647);
+  background-image: -o-linear-gradient(top, #bdbdbd, #464647);
+  background-image: linear-gradient(to bottom, #bdbdbd, #464647);
+  
+  text-decoration: none;
+}
