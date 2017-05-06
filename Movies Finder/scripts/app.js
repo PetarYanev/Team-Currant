@@ -20,13 +20,45 @@ let router = Sammy("#content", function() {
     }
 
     this.get("#/home/", function() {
-        galleyControl.getAllMovies()
-            .then(function(movies) {
-                template.get("home")
-                    .then(function(template) {
-                        $content.html(template(movies));
-                    });
+        $().ready(function() {
+            let skip = 0;
+            let moviesInDB;
+
+            galleyControl.getAllMovies(skip)
+                .then(function(movies) {
+                    template.get("home")
+                        .then(function(template) {
+                            $content.html(template(movies));
+                        });
+                });
+            galleyControl.getMoviesCount()
+                .then(function(moviesCount) {
+                    moviesInDB = moviesCount.count | 0;
+                });
+
+            $(document).scroll(function() {
+                if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                    loadNewData();
+                }
             });
+
+            function loadNewData() {
+                let remainingMovies = moviesInDB - 8;
+
+                if (remainingMovies >= 0) {
+                    skip += 8;
+                    galleyControl.getAllMovies(skip)
+                        .then(function(movies) {
+                            template.get("home")
+                                .then(function(template) {
+                                    $content.append(template(movies));
+                                });
+                        });
+                }
+            }
+        });
+
+
     });
 
     this.get("#/login", function(context) {

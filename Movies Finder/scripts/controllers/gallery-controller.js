@@ -2,11 +2,31 @@ import $ from "jquery";
 import { encryptToBase64 } from "encryptor";
 
 let galleyControl = function() {
-    function getAllMovies() {
+    function getAllMovies(skip) {
         let promise = new Promise(function(resolve) {
 
             $.ajax({
-                url: "https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query={}&sort={\"name\": 1}",
+                url: `https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query={}&limit=8&skip=${skip}`,
+                method: "GET",
+                headers: {
+                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
+                },
+                data: JSON.stringify(),
+                contentType: "application/json",
+                success: function(response) {
+                    resolve(response);
+                }
+            });
+        });
+
+        return promise;
+    }
+
+    function getMoviesCount() {
+        let promise = new Promise(function(resolve) {
+
+            $.ajax({
+                url: "https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/_count",
                 method: "GET",
                 headers: {
                     "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
@@ -112,6 +132,7 @@ let galleyControl = function() {
 
     return {
         getAllMovies,
+        getMoviesCount,
         getMoviesByGenre,
         getMoviesByRate,
         getMoviesByNowPlaying,
