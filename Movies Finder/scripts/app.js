@@ -38,7 +38,8 @@ let router = Sammy("#content", function() {
 
             $(document).scroll(function() {
                 if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-                    loadNewData();
+                    if (window.location.hash === "#/home/")
+                        loadNewData();
                 }
             });
 
@@ -57,8 +58,6 @@ let router = Sammy("#content", function() {
                 }
             }
         });
-
-
     });
 
     this.get("#/login", function(context) {
