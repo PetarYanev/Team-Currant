@@ -1,17 +1,27 @@
 <link rel="stylesheet" href="../css/home.css"> 
 {{#this}} 
-{{#ifFourth @index}}<div class="row">{{/ifFourth}}
+{{#ifFourth @index}}
+<div class="row">{{/ifFourth}}
 	<figure class="col-md-3 col-sm-6 col-xs-12">
 		<div class="thumbnail" id="template">
 			<img src="{{picture}}" id="picture" alt="picture">
+
 			<div class="movie-info">
 				<h3 class="description">{{name}}</h3>
 				<p class="description">{{description}}</p>
+				<p class="description"><strong><u>Genre</u>: </strong>{{genre}}</p>
+				<p class="description"><strong><u>Actors</u>: </strong>{{actors}}</p>
+				<p class="description">
+					<span>
+						<strong><u>Rate</u>: </strong>{{rate}}
+					</span>
+					<span class="glyphicon glyphicon-star"></span>
+				</p>
 			</div>
 
 			<div class="caption">
 				<p>
-					<a href="#/movies-info/{{name}}" class="btn btn-primary" role="button">More Info</a>
+					<a href="#/movies-info/{{name}}" class="btn btn-primary" role="button">Watch trailer</a>
 					<a href="#/watchlist/{{name}}" class="btn btn-default" id="btn-add-to-watchlist" role="button">
 						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>Add to Watchlist
 					</a>
