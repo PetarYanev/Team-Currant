@@ -2,11 +2,31 @@ import $ from "jquery";
 import { encryptToBase64 } from "encryptor";
 
 let galleyControl = function() {
-    function getAllMovies(skip) {
+    function getAllMoviesByParts(moviesOnPage, skip) {
         let promise = new Promise(function(resolve) {
 
             $.ajax({
-                url: `https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query={}&limit=8&skip=${skip}`,
+                url: `https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query={}&limit=${moviesOnPage}&skip=${skip}`,
+                method: "GET",
+                headers: {
+                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
+                },
+                data: JSON.stringify(),
+                contentType: "application/json",
+                success: function(response) {
+                    resolve(response);
+                }
+            });
+        });
+
+        return promise;
+    }
+
+    function getAllMovies() {
+        let promise = new Promise(function(resolve) {
+
+            $.ajax({
+                url: "https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies",
                 method: "GET",
                 headers: {
                     "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
@@ -94,7 +114,7 @@ let galleyControl = function() {
         let promise = new Promise(function(resolve) {
 
             $.ajax({
-                url: "https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query={}&sort={\"rate\": -1}",
+                url: "https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query={}&sort={\"rate\": -1}&limit=12",
                 method: "GET",
                 headers: {
                     "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
@@ -131,6 +151,7 @@ let galleyControl = function() {
     }
 
     return {
+        getAllMoviesByParts,
         getAllMovies,
         getMoviesCount,
         getMoviesByGenre,

@@ -1,7 +1,7 @@
-<link rel="stylesheet" href="../css/home.css"> {{#this}} {{#ifFourth @index}}
-<div class="row">{{/ifFourth}}
-	<figure class="col-md-3 col-sm-6 col-xs-12">
-		<div class="thumbnail" id="template">
+<link rel="stylesheet" href="../css/home.css"> {{#this}}
+<figure class="col-md-4 col-lg-3 col-sm-6 col-xs-12">
+	<div class="thumbnail" id="template">
+		<a href="#/movies-info/{{name}}" class="watch-trailer">
 			<img src="{{picture}}" id="picture" alt="picture">
 
 			<div class="movie-info">
@@ -19,12 +19,12 @@
 
 			<div class="caption">
 				<p>
-					<a href="#/movies-info/{{name}}" class="btn btn-primary" id="btn-watch-trailer" role="button">Watch trailer</a>
 					<a href="#/watchlist-remove/{{name}}" class="btn btn-primary" id="btn-add-to-watchlist" role="button">
 						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Remove from Watchlist
 					</a>
 				</p>
 			</div>
-		</div>
-	</figure>
-	{{#ifFourthLast @index}}</div>{{/ifFourthLast}} {{#if @last}}</div>{{/if}} {{/this}}
+		</a>
+	</div>
+</figure>
+{{/this}}
