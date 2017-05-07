@@ -1,23 +1,30 @@
-<link rel="stylesheet" href="../css/home.css"> 
-{{#this}} 
-{{#ifFourth @index}}<div class="row">{{/ifFourth}}
+<link rel="stylesheet" href="../css/home.css"> {{#this}} {{#ifFourth @index}}
+<div class="row">{{/ifFourth}}
 	<figure class="col-md-3 col-sm-6 col-xs-12">
 		<div class="thumbnail" id="template">
 			<img src="{{picture}}" id="picture" alt="picture">
+
 			<div class="movie-info">
 				<h3 class="description">{{name}}</h3>
 				<p class="description">{{description}}</p>
+				<p class="description"><strong><u>Genre</u>: </strong>{{genre}}</p>
+				<p class="description"><strong><u>Actors</u>: </strong>{{actors}}</p>
+				<p class="description">
+					<span>
+						<strong><u>Rate</u>: </strong>{{rate}}
+					</span>
+					<span class="glyphicon glyphicon-star"></span>
+				</p>
 			</div>
 
 			<div class="caption">
 				<p>
-					<a href="#/movies-info/{{name}}" class="btn btn-primary" role="button">More Info</a>
-					<a href="#/watchlist-remove/{{name}}" class="btn btn-default" role="button">
-					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>Remove from Watchlist
+					<a href="#/movies-info/{{name}}" class="btn btn-primary" id="btn-watch-trailer" role="button">Watch trailer</a>
+					<a href="#/watchlist-remove/{{name}}" class="btn btn-primary" id="btn-add-to-watchlist" role="button">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Remove from Watchlist
 					</a>
 				</p>
 			</div>
 		</div>
 	</figure>
-{{#ifFourthLast @index}}</div>{{/ifFourthLast}} 
-{{#if @last}}</div>{{/if}} {{/this}}
+	{{#ifFourthLast @index}}</div>{{/ifFourthLast}} {{#if @last}}</div>{{/if}} {{/this}}
