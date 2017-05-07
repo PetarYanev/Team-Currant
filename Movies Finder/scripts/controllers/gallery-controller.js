@@ -1,5 +1,4 @@
 import $ from "jquery";
-import { encryptToBase64 } from "encryptor";
 
 let galleyControl = function() {
     function getAllMoviesByParts(moviesOnPage, skip) {
