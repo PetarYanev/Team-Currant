@@ -1,0 +1,23 @@
+#container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+#description{
+    padding: 20px;
+    text-align: center;    
+}
+
+h1{
+    font-size: 42px;
+}
+
+a{
+    color: #1e90ee;
+}
+
+a:hover{
+    text-decoration: none;
+}

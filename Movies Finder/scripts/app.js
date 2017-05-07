@@ -271,13 +271,21 @@ let router = Sammy("#content", function () {
             });
     });
 
-    this.get("#/my-watchlist", function () {
+   this.get("#/my-watchlist", function () {
         accountControl.getMoviesFromUsersWatchlist()
             .then(function (movies) {
-                template.get("watchlist")
+                if(movies.watchlist.length===0){
+                    template.get("empty-watchlist")
+                    .then(function (template) {
+                        $content.html(template());
+                    });
+                }
+                else{
+                    template.get("watchlist")
                     .then(function (template) {
                         $content.html(template(movies.watchlist));
                     });
+                }
             });
     });
 });
