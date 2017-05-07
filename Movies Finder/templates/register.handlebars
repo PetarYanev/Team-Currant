@@ -5,6 +5,16 @@
 	This username already exists.
 </div>
 
+<div class="alert alert-warning" id="wrongSymbols" role="alert" style="display:none;">
+	<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+	The username must be between 5 and 10 symbols long and must contain letters, numbers and underscores only.
+</div>
+
+<div class="alert alert-warning" id="wrongPassword" role="alert" style="display:none;">
+	<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+	The password must be at least 6 symbols long and must contain at least one uppercase, one lowercase letter and a number.
+</div>
+
 <div class="login-container">
 	<h2 class="form-register" id="register-form-header">Register</h2>
 	<input placeholder="Username" type="text" class="form-control user" id="tb-regUsername" />
