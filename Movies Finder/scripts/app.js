@@ -3,7 +3,6 @@ import $ from "jquery";
 import { template } from "template";
 import { accountControl } from "account-controller";
 import { galleyControl } from "gallery-controller";
-import { validator } from "validator";
 
 let router = Sammy("#content", function() {
     let $content = $("#content");
@@ -86,7 +85,14 @@ let router = Sammy("#content", function() {
                         password: $("#tb-password").val()
                     };
 
-                    accountControl.userLogin(loginUser, context);
+                    accountControl.userLogin(loginUser)
+                        .then(function() {
+                            context.redirect("#/home/");
+                            $("#nav-btn-logout").removeClass("hidden");
+                            $("#nav-btn-login").addClass("hidden");
+                            $("#nav-btn-register").addClass("hidden");
+                            $("#my-watchlist").removeClass("hidden");
+                        });
                 });
             });
     });
@@ -107,19 +113,25 @@ let router = Sammy("#content", function() {
                         password: $("#tb-regPassword").val()
                     };
 
-                    let validationResult = validator.validate(registerNewUser);
-
-                    if (validationResult) {
-                        context.redirect("#/register");
-                    } else {
-                        accountControl.userRegister(registerNewUser, context);
-                    }
+                    accountControl.userRegister(registerNewUser)
+                        .then(function() {
+                            if (registerNewUser.username.trim() === "" || registerNewUser.password.trim() === "") {
+                                // toastr.error("Invalid username or password");
+                            } else {
+                                context.redirect("#/login");
+                            }
+                        });
                 });
             });
     });
 
     this.get("#/logout", function(context) {
-        accountControl.userLogout(context);
+        accountControl.userLogout();
+        context.redirect("#/home/");
+        $("#nav-btn-logout").addClass("hidden");
+        $("#nav-btn-login").removeClass("hidden");
+        $("#nav-btn-register").removeClass("hidden");
+        $("#my-watchlist").addClass("hidden");
     });
 
     this.get("#/sorted-by/?:genre", function() {
@@ -230,7 +242,9 @@ let router = Sammy("#content", function() {
                 accountControl.addMovieToUserWatchlist(movies);
                 context.redirect("#/my-watchlist");
             });
+
     });
+
 
     this.get("#/contact/", function() {
         template.get("contacts")
@@ -242,18 +256,19 @@ let router = Sammy("#content", function() {
     this.get("#/my-watchlist", function() {
         accountControl.getMoviesFromUsersWatchlist()
             .then(function(movies) {
-                if (!movies.watchlist || movies.watchlist.length === 0) {
-                    template.get("empty-watchlist")
-                        .then(function(template) {
-                            $content.html(template());
-                        });
-                } else {
-                    template.get("watchlist")
-                        .then(function(template) {
-                            $content.html(template(movies.watchlist));
-                        });
-                }
+                template.get("watchlist")
+                    .then(function(template) {
+                        $content.html(template(movies.watchlist));
+                    });
             });
+
+        UTILS.getShortUrl(window.location.href, function(url) {
+            var shareURL = `https://www.facebook.com/sharer/sharer.php?u=${encodeURI(url)}`;
+            $("#facebook-share").on("click", function() {
+                var fbpopup = window.open(shareURL, "pop", "width=600, height=400, scrollbars=no");
+                return false;
+            });
+        });
     });
 });
 

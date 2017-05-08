@@ -2,23 +2,25 @@ import $ from "jquery";
 
 class Validator {
 
-    validate(registerNewUser) {
+    validate(registerNewUser, context) {
         if (!(/\S[_a-zA-Z0-9]{4,10}/).test(registerNewUser.username)) {
             $("#wrongSymbols").fadeIn();
             setTimeout(() => {
                 $("#wrongSymbols").hide();
+                context.redirect("#/register");
             }, 3000);
 
-            return true;
+            return false;
         } else if (!(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,20}/).test(registerNewUser.password)) {
             $("#wrongPassword").fadeIn();
             setTimeout(() => {
                 $("#wrongPassword").hide();
+                context.redirect("#/register");
             }, 3000);
 
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 }
