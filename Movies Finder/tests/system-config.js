@@ -19,9 +19,13 @@ SystemJS.config({
 
         "app": "../scripts/app.js",
         "template": "../scripts/template.js",
-        "account-controller": "../scripts/controllers/account-controller.js",
-        "gallery-controller": "../scripts/controllers/gallery-controller.js",
+        "account-data": "../scripts/data/account-data.js",
+        "gallery-data": "../scripts/data/gallery-data.js",
         "encryptor": "../scripts/еncryptor.js",
+        "validator": "../scripts/utils/validator.js",
+        "requester": "../scripts/requester/request.js",
+        "galleryController": "../scripts/controllers/gallery-controller.js",
+        "accountController": "../scripts/controllers/account-controller.js",
         "test": "./test.js"
     }
 });
