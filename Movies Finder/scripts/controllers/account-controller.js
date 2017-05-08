@@ -1,6 +1,5 @@
 import $ from "jquery";
-import { encryptToBase64 } from "encryptor";
-import { encryptToSha1 } from "encryptor";
+import { encryptor } from "encryptor";
 
 let accountControl = function() {
     const AUTH_TOKEN_STORAGE_KEY = "usernameKey",
@@ -11,10 +10,10 @@ let accountControl = function() {
         let promise = new Promise(function(resolve, reject) {
             let logUser = {
                 username: loginUser.username,
-                password: encryptToSha1(loginUser.password)
+                password: encryptor.encryptToSha1(loginUser.password)
             };
 
-            let authorization = encryptToBase64("kid_HkCptq2Ae:f78eee25f64842e28ddda28312edac4a");
+            let authorization = encryptor.encryptToBase64("kid_HkCptq2Ae:f78eee25f64842e28ddda28312edac4a");
 
             $.ajax({
                 url: "https://baas.kinvey.com/user/kid_HkCptq2Ae/login",
@@ -45,10 +44,10 @@ let accountControl = function() {
         let promise = new Promise(function(resolve, reject) {
             let user = {
                 username: registerNewUser.username,
-                password: encryptToSha1(registerNewUser.password)
+                password: encryptor.encryptToSha1(registerNewUser.password)
             };
 
-            let authorization = encryptToBase64("kid_HkCptq2Ae:f78eee25f64842e28ddda28312edac4a");
+            let authorization = encryptor.encryptToBase64("kid_HkCptq2Ae:f78eee25f64842e28ddda28312edac4a");
 
             $.ajax({
                 url: "https://baas.kinvey.com/user/kid_HkCptq2Ae/",

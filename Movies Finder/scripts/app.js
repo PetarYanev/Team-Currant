@@ -113,28 +113,14 @@ let router = Sammy("#content", function() {
                         password: $("#tb-regPassword").val()
                     };
 
-                    if (!(/\S[_a-zA-Z0-9]{4,10}/).test(registerNewUser.username)) {
-                        $("#wrongSymbols").fadeIn();
-                        setTimeout(() => {
-                            $("#wrongSymbols").hide();
-                            context.redirect("#/register");
-                        }, 3000);
-                    } else if (!(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,20}/).test(registerNewUser.password)) {
-                        $("#wrongPassword").fadeIn();
-                        setTimeout(() => {
-                            $("#wrongPassword").hide();
-                            context.redirect("#/register");
-                        }, 3000);
-                    } else {
-                        accountControl.userRegister(registerNewUser)
-                            .then(function() {
-                                if (registerNewUser.username.trim() === "" || registerNewUser.password.trim() === "") {
-                                    // toastr.error("Invalid username or password");
-                                } else {
-                                    context.redirect("#/login");
-                                }
-                            });
-                    }
+                    accountControl.userRegister(registerNewUser)
+                        .then(function() {
+                            if (registerNewUser.username.trim() === "" || registerNewUser.password.trim() === "") {
+                                // toastr.error("Invalid username or password");
+                            } else {
+                                context.redirect("#/login");
+                            }
+                        });
                 });
             });
     });
@@ -193,7 +179,6 @@ let router = Sammy("#content", function() {
     });
 
     this.get("#/search/?:searchInput", function() {
-        // $("#search-btn").on("click", function() {
         let title = this.params["searchInput"];
         let moviesToShow = [];
 
@@ -209,7 +194,6 @@ let router = Sammy("#content", function() {
             .then(function(template) {
                 $content.html(template(moviesToShow));
             });
-        // });
     });
 
     this.get("#/watchlist/?:name", function() {
@@ -272,18 +256,19 @@ let router = Sammy("#content", function() {
     this.get("#/my-watchlist", function() {
         accountControl.getMoviesFromUsersWatchlist()
             .then(function(movies) {
-                if (movies.watchlist.length === 0) {
-                    template.get("empty-watchlist")
-                        .then(function(template) {
-                            $content.html(template());
-                        });
-                } else {
-                    template.get("watchlist")
-                        .then(function(template) {
-                            $content.html(template(movies.watchlist));
-                        });
-                }
+                template.get("watchlist")
+                    .then(function(template) {
+                        $content.html(template(movies.watchlist));
+                    });
             });
+
+        UTILS.getShortUrl(window.location.href, function(url) {
+            var shareURL = `https://www.facebook.com/sharer/sharer.php?u=${encodeURI(url)}`;
+            $("#facebook-share").on("click", function() {
+                var fbpopup = window.open(shareURL, "pop", "width=600, height=400, scrollbars=no");
+                return false;
+            });
+        });
     });
 });
 
