@@ -1,163 +1,75 @@
-import $ from "jquery";
+import { requester } from "requester";
 
-let galleyControl = function() {
-    function getAllMoviesByParts(moviesOnPage, skip) {
-        let promise = new Promise(function(resolve) {
+class GalleyControl {
+    getAllMoviesByParts(moviesOnPage, skip) {
+        let url = `https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query={}&limit=${moviesOnPage}&skip=${skip}`,
+            headers = {
+                "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
+            };
 
-            $.ajax({
-                url: `https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query={}&limit=${moviesOnPage}&skip=${skip}`,
-                method: "GET",
-                headers: {
-                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
-                },
-                data: JSON.stringify(),
-                contentType: "application/json",
-                success: function(response) {
-                    resolve(response);
-                }
-            });
-        });
-
-        return promise;
+        return requester.get(url, headers);
     }
 
-    function getAllMovies() {
-        let promise = new Promise(function(resolve) {
+    getAllMovies() {
+        let url = "https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies",
+            headers = {
+                "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
+            };
 
-            $.ajax({
-                url: "https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies",
-                method: "GET",
-                headers: {
-                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
-                },
-                data: JSON.stringify(),
-                contentType: "application/json",
-                success: function(response) {
-                    resolve(response);
-                }
-            });
-        });
-
-        return promise;
+        return requester.get(url, headers);
     }
 
-    function getMoviesCount() {
-        let promise = new Promise(function(resolve) {
+    getMoviesCount() {
+        let url = "https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/_count",
+            headers = {
+                "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
+            };
 
-            $.ajax({
-                url: "https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/_count",
-                method: "GET",
-                headers: {
-                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
-                },
-                data: JSON.stringify(),
-                contentType: "application/json",
-                success: function(response) {
-                    resolve(response);
-                }
-            });
-        });
-
-        return promise;
+        return requester.get(url, headers);
     }
 
-    function getMoviesByGenre(movieGenre) {
-        let promise = new Promise(function(resolve) {
-
-            var filter = JSON.stringify({
+    getMoviesByGenre(movieGenre) {
+        let filter = JSON.stringify({
                 "genre": movieGenre
-            });
+            }),
+            url = `https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query=${filter}`,
+            headers = {
+                "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
+            };
 
-            $.ajax({
-                url: `https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query=${filter}`,
-                method: "GET",
-                headers: {
-                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
-                },
-                data: JSON.stringify(),
-                contentType: "application/json",
-                success: function(response) {
-                    resolve(response);
-                }
-            });
-        });
-
-        return promise;
+        return requester.get(url, headers);
     }
 
-    function getMoviesByTitle(movieTitle) {
-        let promise = new Promise(function(resolve) {
-
-            var filter = JSON.stringify({
+    getMoviesByTitle(movieTitle) {
+        let filter = JSON.stringify({
                 "name": movieTitle
-            });
+            }),
+            url = `https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query=${filter}`,
+            headers = {
+                "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
+            };
 
-            $.ajax({
-                url: `https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query=${filter}`,
-                method: "GET",
-                headers: {
-                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
-                },
-                data: JSON.stringify(),
-                contentType: "application/json",
-                success: function(response) {
-                    resolve(response);
-                }
-            });
-        });
-
-        return promise;
+        return requester.get(url, headers);
     }
 
-    function getMoviesByRate() {
-        let promise = new Promise(function(resolve) {
+    getMoviesByRate() {
+        let url = "https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query={}&sort={\"rate\": -1}&limit=12",
+            headers = {
+                "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
+            };
 
-            $.ajax({
-                url: "https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query={}&sort={\"rate\": -1}&limit=12",
-                method: "GET",
-                headers: {
-                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
-                },
-                data: JSON.stringify(),
-                contentType: "application/json",
-                success: function(response) {
-                    resolve(response);
-                }
-            });
-        });
-
-        return promise;
+        return requester.get(url, headers);
     }
 
-    function getMoviesByNowPlaying() {
-        let promise = new Promise(function(resolve) {
+    getMoviesByNowPlaying() {
+        let url = "https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query={\"now-playing\":\"yes\"}",
+            headers = {
+                "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
+            };
 
-            $.ajax({
-                url: "https://baas.kinvey.com/appdata/kid_HkCptq2Ae/movies/?query={\"now-playing\":\"yes\"}",
-                method: "GET",
-                headers: {
-                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
-                },
-                data: JSON.stringify(),
-                contentType: "application/json",
-                success: function(response) {
-                    resolve(response);
-                }
-            });
-        });
-
-        return promise;
+        return requester.get(url, headers);
     }
+}
 
-    return {
-        getAllMoviesByParts,
-        getAllMovies,
-        getMoviesCount,
-        getMoviesByGenre,
-        getMoviesByRate,
-        getMoviesByNowPlaying,
-        getMoviesByTitle
-    };
-}();
-
+let galleyControl = new GalleyControl();
 export { galleyControl };

@@ -1,135 +1,95 @@
 import $ from "jquery";
 import { encryptor } from "encryptor";
+import { requester } from "requester";
 
-let accountControl = function() {
-    const AUTH_TOKEN_STORAGE_KEY = "usernameKey",
-        USERNAME_STORAGE_KEY = "username",
-        USER_ID = "userId";
+class AccountControl {
 
-    function userLogin(loginUser) {
-        let promise = new Promise(function(resolve, reject) {
-            let logUser = {
+    userLogin(loginUser, context) {
+        let authorization = encryptor.encryptToBase64("kid_HkCptq2Ae:f78eee25f64842e28ddda28312edac4a"),
+            url = "https://baas.kinvey.com/user/kid_HkCptq2Ae/login",
+            headers = {
+                "Authorization": `Basic ${authorization}`
+            },
+            logUser = {
                 username: loginUser.username,
                 password: encryptor.encryptToSha1(loginUser.password)
             };
 
-            let authorization = encryptor.encryptToBase64("kid_HkCptq2Ae:f78eee25f64842e28ddda28312edac4a");
+        requester.post(url, headers, logUser)
+            .then(function(user) {
+                $("#nav-btn-logout").removeClass("hidden");
+                $("#nav-btn-login").addClass("hidden");
+                $("#nav-btn-register").addClass("hidden");
+                $("#my-watchlist").removeClass("hidden");
 
-            $.ajax({
-                url: "https://baas.kinvey.com/user/kid_HkCptq2Ae/login",
-                method: "POST",
-                headers: {
-                    "Authorization": `Basic ${authorization}`
-                },
-                data: JSON.stringify(logUser),
-                contentType: "application/json",
-                success: function(user) {
-                    localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, user._kmd.authtoken);
-                    localStorage.setItem(USERNAME_STORAGE_KEY, user.username);
-                    localStorage.setItem(USER_ID, user._id);
+                localStorage.setItem("usernameKey", user._kmd.authtoken);
+                localStorage.setItem("username", user.username);
+                localStorage.setItem("userId", user._id);
 
-                    resolve(user);
-                },
-                error: function(err) {
-                    $("#passwordsNoMatchRegister").fadeIn();
-                    reject(err);
-                }
+                context.redirect("#/home/");
+            }, function() {
+                $("#passwordsNoMatchRegister").fadeIn();
             });
-        });
-
-        return promise;
     }
 
-    function userRegister(registerNewUser) {
-        let promise = new Promise(function(resolve, reject) {
-            let user = {
+    userRegister(registerNewUser, context) {
+        let authorization = encryptor.encryptToBase64("kid_HkCptq2Ae:f78eee25f64842e28ddda28312edac4a"),
+            url = "https://baas.kinvey.com/user/kid_HkCptq2Ae",
+            headers = {
+                "Authorization": `Basic ${authorization}`
+            },
+            user = {
                 username: registerNewUser.username,
                 password: encryptor.encryptToSha1(registerNewUser.password)
             };
 
-            let authorization = encryptor.encryptToBase64("kid_HkCptq2Ae:f78eee25f64842e28ddda28312edac4a");
-
-            $.ajax({
-                url: "https://baas.kinvey.com/user/kid_HkCptq2Ae/",
-                method: "POST",
-                headers: {
-                    "Authorization": `Basic ${authorization}`
-                },
-                data: JSON.stringify(user),
-                contentType: "application/json",
-                success: function(user) {
-                    resolve(user);
-                },
-                error: function(err) {
-                    $("#existingUser").fadeIn();
-                    reject(err);
-                }
+        requester.post(url, headers, user)
+            .then(function() {
+                context.redirect("#/login");
+            }, function() {
+                $("#existingUser").fadeIn();
             });
-        });
-
-        return promise;
     }
 
-    function userLogout() {
-        let promise = new Promise(function(resolve) {
-            localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY);
-            localStorage.removeItem(USERNAME_STORAGE_KEY);
-            localStorage.removeItem(USER_ID);
+    userLogout(context) {
 
-            resolve();
-        });
+        $("#nav-btn-logout").addClass("hidden");
+        $("#nav-btn-login").removeClass("hidden");
+        $("#nav-btn-register").removeClass("hidden");
+        $("#my-watchlist").addClass("hidden");
 
-        return promise;
+        localStorage.removeItem("usernameKey");
+        localStorage.removeItem("username");
+        localStorage.removeItem("userId");
+
+        context.redirect("#/home/");
     }
 
-    function addMovieToUserWatchlist(movie) {
-        let promise = new Promise(function(resolve) {
-            let userId = localStorage.getItem(USER_ID);
-            let addedMovie = {
-                watchlist: movie
+    addMovieToUserWatchlist(movie) {
+        let userId = localStorage.getItem("userId"),
+            addedMovie = { watchlist: movie },
+            url = `https://baas.kinvey.com/user/kid_HkCptq2Ae/${userId}`,
+            headers = {
+                "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
             };
 
-            $.ajax({
-                url: `https://baas.kinvey.com/user/kid_HkCptq2Ae/${userId}`,
-                method: "PUT",
-                headers: {
-                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
-                },
-                data: JSON.stringify(addedMovie),
-                contentType: "application/json",
-                success: function(response) {
-                    resolve(response);
-                }
-            });
-        });
-
-        return promise;
+        requester.put(url, headers, addedMovie);
     }
 
-    function getMoviesFromUsersWatchlist() {
-        let promise = new Promise(function(resolve) {
-            let userId = localStorage.getItem(USER_ID);
+    getMoviesFromUsersWatchlist() {
+        let userId = localStorage.getItem("userId"),
+            url = `https://baas.kinvey.com/user/kid_HkCptq2Ae/${userId}`,
+            headers = {
+                "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
+            };
 
-            $.ajax({
-                url: `https://baas.kinvey.com/user/kid_HkCptq2Ae/${userId}`,
-                method: "GET",
-                headers: {
-                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
-                },
-                contentType: "application/json",
-                success: function(response) {
-                    resolve(response);
-                }
-            });
-        });
-
-        return promise;
+        return requester.get(url, headers);
     }
 
-    function currentUser() {
-        let username = localStorage.getItem(AUTH_TOKEN_STORAGE_KEY);
-        let userToken = localStorage.getItem(USERNAME_STORAGE_KEY);
-        let userId = localStorage.getItem(USER_ID);
+    currentUser() {
+        let username = localStorage.getItem("usernameKey");
+        let userToken = localStorage.getItem("username");
+        let userId = localStorage.getItem("userId");
 
         if (!username) {
             return null;
@@ -141,15 +101,7 @@ let accountControl = function() {
             };
         }
     }
+}
 
-    return {
-        userLogin,
-        userRegister,
-        userLogout,
-        currentUser,
-        addMovieToUserWatchlist,
-        getMoviesFromUsersWatchlist
-    };
-}();
-
+let accountControl = new AccountControl();
 export { accountControl };
