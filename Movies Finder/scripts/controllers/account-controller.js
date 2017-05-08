@@ -1,155 +1,162 @@
 import $ from "jquery";
-import { encryptor } from "encryptor";
+import { template } from "template";
+import { accountData } from "account-data";
+import { galleyData } from "gallery-data";
+import { validator } from "validator";
 
-let accountControl = function() {
-    const AUTH_TOKEN_STORAGE_KEY = "usernameKey",
-        USERNAME_STORAGE_KEY = "username",
-        USER_ID = "userId";
+class AccountController {
+    constructor(accountData, galleyData, template) {
+        this.accountData = accountData;
+        this.template = template;
+        this.galleyData = galleyData;
+    }
 
-    function userLogin(loginUser) {
-        let promise = new Promise(function(resolve, reject) {
-            let logUser = {
-                username: loginUser.username,
-                password: encryptor.encryptToSha1(loginUser.password)
-            };
+    loginUser(context, content) {
+        let _this = this,
+            $content = content;
 
-            let authorization = encryptor.encryptToBase64("kid_HkCptq2Ae:f78eee25f64842e28ddda28312edac4a");
+        _this.template.get("login")
+            .then(function(template) {
+                $content.html(template());
 
-            $.ajax({
-                url: "https://baas.kinvey.com/user/kid_HkCptq2Ae/login",
-                method: "POST",
-                headers: {
-                    "Authorization": `Basic ${authorization}`
-                },
-                data: JSON.stringify(logUser),
-                contentType: "application/json",
-                success: function(user) {
-                    localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, user._kmd.authtoken);
-                    localStorage.setItem(USERNAME_STORAGE_KEY, user.username);
-                    localStorage.setItem(USER_ID, user._id);
+                $("#btn-login").on("click", function() {
+                    let loginUser = {
+                        username: $("#tb-username").val(),
+                        password: $("#tb-password").val()
+                    };
 
-                    resolve(user);
-                },
-                error: function(err) {
-                    $("#passwordsNoMatchRegister").fadeIn();
-                    reject(err);
+                    _this.accountData.userLogin(loginUser, context)
+                        .then(function(user) {
+                            $("#nav-btn-logout").removeClass("hidden");
+                            $("#nav-btn-login").addClass("hidden");
+                            $("#nav-btn-register").addClass("hidden");
+                            $("#my-watchlist").removeClass("hidden");
+
+                            localStorage.setItem("usernameKey", user._kmd.authtoken);
+                            localStorage.setItem("username", user.username);
+                            localStorage.setItem("userId", user._id);
+
+                            context.redirect("#/home/");
+                        }, function() {
+                            $("#passwordsNoMatchRegister").fadeIn();
+                        });
+                });
+            });
+    }
+
+
+    registerUser(context, content) {
+        let _this = this,
+            $content = content;
+
+        _this.template.get("register")
+            .then(function(template) {
+                $content.html(template());
+
+                $("#btn-register").on("click", function() {
+                    let registerNewUser = {
+                        username: $("#tb-regUsername").val(),
+                        password: $("#tb-regPassword").val()
+                    };
+
+                    let validationResult = validator.validate(registerNewUser);
+
+                    if (validationResult) {
+                        context.redirect("#/register");
+                    } else {
+                        _this.accountData.userRegister(registerNewUser)
+                            .then(function() {
+                                context.redirect("#/login");
+                            }, function() {
+                                $("#existingUser").fadeIn();
+                            });
+                    }
+                });
+            });
+    }
+
+    logoutUser(context) {
+
+        $("#nav-btn-logout").addClass("hidden");
+        $("#nav-btn-login").removeClass("hidden");
+        $("#nav-btn-register").removeClass("hidden");
+        $("#my-watchlist").addClass("hidden");
+
+        localStorage.removeItem("usernameKey");
+        localStorage.removeItem("username");
+        localStorage.removeItem("userId");
+
+        context.redirect("#/home/");
+    }
+
+    addMovieToUserWatchlist(title) {
+        let _this = this;
+
+        _this.galleyData.getMoviesByTitle(title)
+            .then(function(movie) {
+                _this.accountData.getMoviesFromUsersWatchlist()
+                    .then(function(user) {
+                        let movies = user.watchlist;
+                        let isTheMovieAdded = false;
+
+                        if (!movies) {
+                            _this.accountData.addMovieToUserWatchlist(movie);
+                        } else {
+                            movies.forEach(function(movieInWatchlist) {
+                                if (movieInWatchlist._id === movie[0]._id) {
+                                    isTheMovieAdded = true;
+                                }
+                            });
+
+                            if (!isTheMovieAdded) {
+                                movies.push(movie[0]);
+
+                                _this.accountData.addMovieToUserWatchlist(movies);
+                            }
+                        }
+                    });
+            });
+    }
+
+    removeMovieFromUserWatchlist(title, context) {
+        let _this = this;
+
+        _this.accountData.getMoviesFromUsersWatchlist()
+            .then(function(user) {
+                let movies = user.watchlist;
+
+                for (var i = 0; i < movies.length; i += 1) {
+                    if (movies[i].name === title) {
+                        movies.splice(i, 1);
+                        break;
+                    }
+                }
+
+                _this.accountData.addMovieToUserWatchlist(movies);
+                context.redirect("#/my-watchlist");
+            });
+    }
+
+    getUserWatchlist(content) {
+        let _this = this,
+            $content = content;
+
+        _this.accountData.getMoviesFromUsersWatchlist()
+            .then(function(movies) {
+                if (!movies.watchlist || movies.watchlist.length === 0) {
+                    template.get("empty-watchlist")
+                        .then(function(template) {
+                            $content.html(template());
+                        });
+                } else {
+                    template.get("watchlist")
+                        .then(function(template) {
+                            $content.html(template(movies.watchlist));
+                        });
                 }
             });
-        });
-
-        return promise;
     }
+}
 
-    function userRegister(registerNewUser) {
-        let promise = new Promise(function(resolve, reject) {
-            let user = {
-                username: registerNewUser.username,
-                password: encryptor.encryptToSha1(registerNewUser.password)
-            };
-
-            let authorization = encryptor.encryptToBase64("kid_HkCptq2Ae:f78eee25f64842e28ddda28312edac4a");
-
-            $.ajax({
-                url: "https://baas.kinvey.com/user/kid_HkCptq2Ae/",
-                method: "POST",
-                headers: {
-                    "Authorization": `Basic ${authorization}`
-                },
-                data: JSON.stringify(user),
-                contentType: "application/json",
-                success: function(user) {
-                    resolve(user);
-                },
-                error: function(err) {
-                    $("#existingUser").fadeIn();
-                    reject(err);
-                }
-            });
-        });
-
-        return promise;
-    }
-
-    function userLogout() {
-        let promise = new Promise(function(resolve) {
-            localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY);
-            localStorage.removeItem(USERNAME_STORAGE_KEY);
-            localStorage.removeItem(USER_ID);
-
-            resolve();
-        });
-
-        return promise;
-    }
-
-    function addMovieToUserWatchlist(movie) {
-        let promise = new Promise(function(resolve) {
-            let userId = localStorage.getItem(USER_ID);
-            let addedMovie = {
-                watchlist: movie
-            };
-
-            $.ajax({
-                url: `https://baas.kinvey.com/user/kid_HkCptq2Ae/${userId}`,
-                method: "PUT",
-                headers: {
-                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
-                },
-                data: JSON.stringify(addedMovie),
-                contentType: "application/json",
-                success: function(response) {
-                    resolve(response);
-                }
-            });
-        });
-
-        return promise;
-    }
-
-    function getMoviesFromUsersWatchlist() {
-        let promise = new Promise(function(resolve) {
-            let userId = localStorage.getItem(USER_ID);
-
-            $.ajax({
-                url: `https://baas.kinvey.com/user/kid_HkCptq2Ae/${userId}`,
-                method: "GET",
-                headers: {
-                    "Authorization": "Basic a2lkX0hrQ3B0cTJBZTo3OWY0ZmIwODE4MmU0NmMxOTBlNTkzNWYzNzEyZDQ3Mw=="
-                },
-                contentType: "application/json",
-                success: function(response) {
-                    resolve(response);
-                }
-            });
-        });
-
-        return promise;
-    }
-
-    function currentUser() {
-        let username = localStorage.getItem(AUTH_TOKEN_STORAGE_KEY);
-        let userToken = localStorage.getItem(USERNAME_STORAGE_KEY);
-        let userId = localStorage.getItem(USER_ID);
-
-        if (!username) {
-            return null;
-        } else {
-            return {
-                username,
-                userToken,
-                userId
-            };
-        }
-    }
-
-    return {
-        userLogin,
-        userRegister,
-        userLogout,
-        currentUser,
-        addMovieToUserWatchlist,
-        getMoviesFromUsersWatchlist
-    };
-}();
-
-export { accountControl };
+let accountController = new AccountController(accountData, galleyData, template);
+export { accountController };
