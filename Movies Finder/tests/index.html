@@ -35,10 +35,7 @@
 
 
     <script src="../node_modules/systemjs/dist/system.js"></script>
-    <script src="../scripts/configs/system-config.js"></script>
-    <script>
-        System.import("../scripts/app.js");
-    </script>
+
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../node_modules/handlebars/dist/handlebars.js"></script>
     <script src="../node_modules/sammy/lib/sammy.js"></script>
@@ -47,8 +44,8 @@
     <script>
         mocha.setup('bdd');
     </script>
-    <script src="test.js"></script>
-
+    <script src="./system-config.js"></script>
+    <script src="./test.js"></script>
     <script>
         mocha.run();
     </script>
