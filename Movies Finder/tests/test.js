@@ -258,25 +258,6 @@ describe('Data test', ()=>{
                 })
                 .then(done, done);
         });
-        
-        it('expect login to make a PUT request to ', ()=>{
-            const user = {
-                username: "someUser",
-                password: "somePass234"
-            };
-            const response = {
-                result: {
-                    username: user.username,
-                    authKey: "SOME_AUTH_KEY"
-                }
-            };
-            requesterStub.returns(Promise.resolve(response));
-
-            accountData.userLogin(user)
-                .then(()=>{
-                    expect(requesterStub).to.have.been.calledOnce;
-                });
-        });
 
     });
 
