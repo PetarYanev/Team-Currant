@@ -19,7 +19,7 @@ describe('Data test', ()=>{
     afterEach(clearLocalStorage);
 
 
-    describe("User test", () => {
+    describe("Register test", () => {
         let requesterStub;
         let encryptorStub;
         const passHash = 'SOME_PASS_HASH';
@@ -126,6 +126,25 @@ describe('Data test', ()=>{
             clearLocalStorage;
         });
 
+        it('expect register function to return a Promise', () => {
+        const user = {
+                username: "someUser",
+                password: "somePass234"
+            };
+
+            const response = {
+                result: {
+                    username: user.username,
+                    authKey: "SOME_AUTH_KEY"
+                }
+            };
+
+        requesterStub.returns(Promise.resolve(response));
+
+        const promise = accountData.userRegister(user);
+        expect(promise).to.be.an.instanceof(Promise);
+      });
+
         // it('expect register function to return a Promise which resolves with registered username', (done)=>{
         //     const user = {
         //         username: "someUser",
@@ -150,7 +169,6 @@ describe('Data test', ()=>{
         //         .then(done, done);
         // });
 
-        
         // it('expect register to make a POST request to (url, headers, user)', (done)=>{
         //     const user = {
         //         username: "someUser",
@@ -202,7 +220,66 @@ describe('Data test', ()=>{
         //         })
         //         .then(done, done);
         // });
+   
+
+ });
+    describe('Login tests', ()=>{
+        let requesterStub;
+        let encryptorStub;
+        const passHash = 'SOME_PASS_HASH';
+
+        beforeEach(() => {
+            requesterStub = sinon.stub(requester, "post");
+            encryptorStub = sinon.stub(encryptor, 'encryptToSha1')
+                .returns(passHash);
+        });
+
+        afterEach(() => {
+            requesterStub.restore();
+            encryptorStub.restore();
+        });
+
+        it('expect login to make a PUT request', (done)=>{
+            const user = {
+                username: "someUser",
+                password: "somePass234"
+            };
+            const response = {
+                result: {
+                    username: user.username,
+                    authKey: "SOME_AUTH_KEY"
+                }
+            };
+            requesterStub.returns(Promise.resolve(response));
+
+            accountData.userLogin(user)
+                .then(()=>{
+                    expect(requesterStub).to.have.been.calledOnce;
+                })
+                .then(done, done);
+        });
+        
+        it('expect login to make a PUT request', ()=>{
+            const user = {
+                username: "someUser",
+                password: "somePass234"
+            };
+            const response = {
+                result: {
+                    username: user.username,
+                    authKey: "SOME_AUTH_KEY"
+                }
+            };
+            requesterStub.returns(Promise.resolve(response));
+
+            accountData.userLogin(user)
+                .then(()=>{
+                    expect(requesterStub).to.have.been.calledOnce;
+                });
+        });
+
     });
+
 });
 
 
