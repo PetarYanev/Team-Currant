@@ -17,7 +17,7 @@
 						<span class="glyphicon glyphicon-star"></span>
 					</p>
 				</div>
-
+                  {{#ifLoggedIn}}
 				<div class="caption">
 					<p>
 						<a href="#/watchlist/{{name}}" class="btn btn-primary" id="btn-add-to-watchlist" role="button">
@@ -25,6 +25,7 @@
 						</a>
 					</p>
 				</div>
+				 {{/ifLoggedIn}}
 			</a>
 		</div>
 	</figure>

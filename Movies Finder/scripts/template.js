@@ -16,6 +16,12 @@ class Template {
             }
         });
 
+        handlebars.registerHelper("ifLoggedIn", function(options) {
+            if (localStorage.username) {
+                return options.fn(this);
+            }
+        });
+
         let promise = new Promise(function(resolve) {
             let url = `templates/${name}.handlebars`;
 
