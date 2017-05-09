@@ -35,28 +35,6 @@ describe('Data test', ()=>{
             encryptorStub.restore();
         });
 
-        it("expect login to call to encryptor.encryptToSha1 once", (done) => {
-            const user = {
-                username: "someUser",
-                password: "somePass234"
-            };
-
-            const response = {
-                result: {
-                    username: user.username,
-                    authKey: "SOME_AUTH_KEY"
-                }
-            };
-
-            requesterStub.returns(Promise.resolve(response));
-
-            accountData.userLogin(user)
-                .then(() => {
-                    expect(encryptorStub).to.have.been.calledOnce;
-                })
-                .then(done, done);
-        });
-
         it('expect register to make a POST request', (done)=>{
             const user = {
                 username: "someUser",
@@ -237,6 +215,28 @@ describe('Data test', ()=>{
         afterEach(() => {
             requesterStub.restore();
             encryptorStub.restore();
+        });
+
+        it("expect login to call to encryptor.encryptToSha1 once", (done) => {
+            const user = {
+                username: "someUser",
+                password: "somePass234"
+            };
+
+            const response = {
+                result: {
+                    username: user.username,
+                    authKey: "SOME_AUTH_KEY"
+                }
+            };
+
+            requesterStub.returns(Promise.resolve(response));
+
+            accountData.userLogin(user)
+                .then(() => {
+                    expect(encryptorStub).to.have.been.calledOnce;
+                })
+                .then(done, done);
         });
 
         it('expect login to make a PUT request', (done)=>{
