@@ -126,56 +126,53 @@ describe('Data test', ()=>{
             clearLocalStorage;
         });
 
-        // it('expect register function to return a Promise which resolves with registered username', (done)=>{
-        //     const user = {
-        //         username: "someUser",
-        //         password: "somePass234"
-        //     };
+            it('expect register function to return a Promise which resolves with registered username', (done)=>{
+                const user = {
+                    username: "someUser",
+                    password: "somePass234"
+                };
 
-        //     const response = {
-        //         result: {
-        //             username: user.username,
-        //             authKey: "SOME_AUTH_KEY"
-        //         }
-        //     };
-        //     requesterStub.returns(Promise.resolve(response));
+                const response = {
+                    result: {
+                        username: user.username,
+                        authKey: "SOME_AUTH_KEY"
+                    }
+                };
+                requesterStub.returns(Promise.resolve(response));
 
-        //     accountData.userRegister(user)
-        //         .then((value)=>{
-        //             const expected = {
-        //                 username: user.username
-        //             };
-        //             expect(value).to.deep.equal(expected);
-        //         })
-        //         .then(done, done);
-        // });
+                accountData.userRegister(user)
+                    .then((value)=>{
+                        const expected = {
+                            username: user.username
+                        };
+                        expect(value.result.username).to.deep.equal(expected.username);
+                    })
+                    .then(done, done);
+            });
 
         
-        // it('expect register to make a POST request to (url, headers, user)', (done)=>{
-        //     const user = {
-        //         username: "someUser",
-        //         password: "somePass234"
-        //     };
-        //     const authorization = encryptor.encryptToBase64("kid_HkCptq2Ae:f78eee25f64842e28ddda28312edac4a");
-        //     const url = "https://baas.kinvey.com/user/kid_HkCptq2Ae";
-        //     const headers = {
-        //             "Authorization": `Basic ${authorization}`
-        //         }
+        it('expect register to make a POST request to kinvey.com/user/kid_HkCptq2Ae', (done)=>{
+            const user = {
+                username: "someUser",
+                password: "somePass234"
+            };
 
-        //     const response = {
-        //         result: {
-        //             username: user.username,
-        //             authKey: "SOME_AUTH_KEY"
-        //         }
-        //     };
-        //     requesterStub.returns(Promise.resolve(response));
+            const url = "https://baas.kinvey.com/user/kid_HkCptq2Ae";
 
-        //     accountData.userRegister(user)
-        //         .then(()=>{
-        //             expect(requesterStub).to.have.been.calledWith(url, headers, user);
-        //         })
-        //         .then(done, done);
-        // });
+            const response = {
+                result: {
+                    username: user.username,
+                    authKey: "SOME_AUTH_KEY"
+                }
+            };
+            requesterStub.returns(Promise.resolve(response));
+
+            accountData.userRegister(user)
+                .then(()=>{
+                    expect(requesterStub).to.have.been.calledWith(url);
+                })
+                .then(done, done);
+        });
 
         // it('expect register to make a POST request with user data (username)', (done)=>{
         //     const user = {
@@ -189,16 +186,17 @@ describe('Data test', ()=>{
         //             authKey: "SOME_AUTH_KEY"
         //         }
         //     };
+
+        //      const expected = {
+        //                     username: user.username,
+        //                     password: encryptorStub(user.password)
+        //             };
+            
         //     requesterStub.returns(Promise.resolve(response));
 
-        //     accountData.userRegister(user)
+        //      accountData.userRegister(user)
         //         .then(()=>{
-        //             const expected = {
-        //                 data : {
-        //                     username: user.username
-        //                     }
-        //             };
-        //             expect(requesterStub.args[0][1].data.username).to.equal(user.username);
+        //             expect(requesterStub).to.have.been.calledWith(expected);
         //         })
         //         .then(done, done);
         // });
