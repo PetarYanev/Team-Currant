@@ -259,7 +259,7 @@ describe('Data test', ()=>{
                 .then(done, done);
         });
         
-        it('expect login to make a PUT request', ()=>{
+        it('expect login to make a PUT request to ', ()=>{
             const user = {
                 username: "someUser",
                 password: "somePass234"
