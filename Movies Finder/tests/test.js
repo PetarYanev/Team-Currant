@@ -20,18 +20,18 @@ describe('Data test', ()=>{
 
 
     describe("Register test", () => {
-        let requesterStub;
+        let requesterPostStub;
         let encryptorStub;
         const passHash = 'SOME_PASS_HASH';
 
         beforeEach(() => {
-            requesterStub = sinon.stub(requester, "post");
+            requesterPostStub = sinon.stub(requester, "post");
             encryptorStub = sinon.stub(encryptor, 'encryptToSha1')
                 .returns(passHash);
         });
 
         afterEach(() => {
-            requesterStub.restore();
+            requesterPostStub.restore();
             encryptorStub.restore();
         });
 
@@ -47,11 +47,11 @@ describe('Data test', ()=>{
                     authKey: "SOME_AUTH_KEY"
                 }
             };
-            requesterStub.returns(Promise.resolve(response));
+            requesterPostStub.returns(Promise.resolve(response));
 
             accountData.userRegister(user)
                 .then(()=>{
-                    expect(requesterStub).to.have.been.calledOnce;
+                    expect(requesterPostStub).to.have.been.calledOnce;
                 })
                 .then(done, done);
         });
@@ -70,7 +70,7 @@ describe('Data test', ()=>{
             };
 
             localStorage.setItem('username', user.username);
-            requesterStub.returns(Promise.resolve(response));
+            requesterPostStub.returns(Promise.resolve(response));
 
             accountData.userRegister(user)
                 .then(()=>{
@@ -94,7 +94,7 @@ describe('Data test', ()=>{
             };
 
             localStorage.setItem('usernameKey', response.result.authKey);
-            requesterStub.returns(Promise.resolve(response));
+            requesterPostStub.returns(Promise.resolve(response));
 
             accountData.userRegister(user)
                 .then(()=>{
@@ -117,7 +117,7 @@ describe('Data test', ()=>{
                 }
             };
 
-        requesterStub.returns(Promise.resolve(response));
+        requesterPostStub.returns(Promise.resolve(response));
 
         const promise = accountData.userRegister(user);
         expect(promise).to.be.an.instanceof(Promise);
@@ -135,7 +135,7 @@ describe('Data test', ()=>{
         //             authKey: "SOME_AUTH_KEY"
         //         }
         //     };
-        //     requesterStub.returns(Promise.resolve(response));
+        //     requesterPostStub.returns(Promise.resolve(response));
 
         //     accountData.userRegister(user)
         //         .then((value)=>{
@@ -164,11 +164,11 @@ describe('Data test', ()=>{
         //             authKey: "SOME_AUTH_KEY"
         //         }
         //     };
-        //     requesterStub.returns(Promise.resolve(response));
+        //     requesterPostStub.returns(Promise.resolve(response));
 
         //     accountData.userRegister(user)
         //         .then(()=>{
-        //             expect(requesterStub).to.have.been.calledWith(url, headers, user);
+        //             expect(requesterPostStub).to.have.been.calledWith(url, headers, user);
         //         })
         //         .then(done, done);
         // });
@@ -185,7 +185,7 @@ describe('Data test', ()=>{
         //             authKey: "SOME_AUTH_KEY"
         //         }
         //     };
-        //     requesterStub.returns(Promise.resolve(response));
+        //     requesterPostStub.returns(Promise.resolve(response));
 
         //     accountData.userRegister(user)
         //         .then(()=>{
@@ -194,7 +194,7 @@ describe('Data test', ()=>{
         //                     username: user.username
         //                     }
         //             };
-        //             expect(requesterStub.args[0][1].data.username).to.equal(user.username);
+        //             expect(requesterPostStub.args[0][1].data.username).to.equal(user.username);
         //         })
         //         .then(done, done);
         // });
@@ -202,18 +202,18 @@ describe('Data test', ()=>{
 
  });
     describe('Login tests', ()=>{
-        let requesterStub;
+        let requesterPutStub;
         let encryptorStub;
         const passHash = 'SOME_PASS_HASH';
 
         beforeEach(() => {
-            requesterStub = sinon.stub(requester, "post");
+            requesterPutStub = sinon.stub(requester, "post");
             encryptorStub = sinon.stub(encryptor, 'encryptToSha1')
                 .returns(passHash);
         });
 
         afterEach(() => {
-            requesterStub.restore();
+            requesterPutStub.restore();
             encryptorStub.restore();
         });
 
@@ -230,7 +230,7 @@ describe('Data test', ()=>{
                 }
             };
 
-            requesterStub.returns(Promise.resolve(response));
+            requesterPutStub.returns(Promise.resolve(response));
 
             accountData.userLogin(user)
                 .then(() => {
@@ -250,11 +250,11 @@ describe('Data test', ()=>{
                     authKey: "SOME_AUTH_KEY"
                 }
             };
-            requesterStub.returns(Promise.resolve(response));
+            requesterPutStub.returns(Promise.resolve(response));
 
             accountData.userLogin(user)
                 .then(()=>{
-                    expect(requesterStub).to.have.been.calledOnce;
+                    expect(requesterPutStub).to.have.been.calledOnce;
                 })
                 .then(done, done);
         });
